@@ -1,7 +1,7 @@
 clc;clear all
-e1 = zeros(1,3);
-e2 = zeros(1,3);
-for h = [0.01 0.001 0.0001]
+e1 = zeros(1,4);
+e2 = zeros(1,4);
+for h = [1 0.01 0.001 0.0001]
     x_aprx = -pi:h:pi;
     l = length(x_aprx);
     syms x
@@ -16,7 +16,7 @@ for h = [0.01 0.001 0.0001]
         df_cfd(l) = df_true(l); % Boundary condition is not given.
         df_cfd(i) = (f(x_aprx(i+1))-f(x_aprx(i-1)))./(2*h);
     end
-    e1(-log10(h)-1) = mean(abs(df_cfd-df_true)./df_true);
+    e1(-log10(h)+1) = mean(abs(df_cfd-df_true)./df_true);
     M = [1 1 1 1 1;
     -2 -1 0 1 2;
     2 1/2 0 1/2 2;
@@ -33,5 +33,5 @@ for h = [0.01 0.001 0.0001]
         df_fod(l) = df_true(l);% Unknown boundary conditions
         df_fod(i) = dot(A,F(i-2:i+2));
     end
-    e2(-log10(h)-1) = mean(abs(df_fod-df_true)./df_true);
+    e2(-log10(h)+1) = mean(abs(df_fod-df_true)./df_true);
 end
